@@ -1,0 +1,64 @@
+#root {
+height:100%
+}
+
+
+#app {
+  height: 100%;
+}
+
+.login-page{
+  background: rgba(15,48,63,1);
+  height: 100%;
+}
+
+.login-wrapper{
+  height: 600px;
+  width: 300px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.login-form{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.menu-bar.top.attached{
+  display: none;
+}
+
+.left-menu{
+  position: fixed;
+  top: 39.9px;
+  bottom: 0px;
+  left: 0px;
+  width: 255px !important;
+  padding-bottom: 1em;
+  background: rgb(27, 28, 29);
+  overflow-y: scroll;
+}
+
+.ui.styled.accordion{
+  border-radius: 0 !important;
+}
+
+.dark{
+  background: #1B1C1D !important;
+}
+
+.main-content{
+  padding: 25px;
+}
+
+@media only screen and (max-width: 768px) {
+
+  .menu-bar.top.fixed{
+    display: none;
+  }
+
+}
