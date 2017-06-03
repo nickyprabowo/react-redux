@@ -1,9 +1,7 @@
-import { dispatch } from '../../store';
-import { loadCred, deleteCred } from '../localStorage';
-import api from '../../utils/api';
+import { loadCred, saveCred, deleteCred } from '../localStorage';
+import api from 'utils/api';
 
-export function getAuthStatus(){
-
+export function getAuthStatus() {
   const authStatus = loadCred();
 
   return {
@@ -14,51 +12,44 @@ export function getAuthStatus(){
   }
 }
 
-export function AuthIsLoading(bool){
-
-  return {
-    type: 'IS_LOADING',
-    payload: {
-      isLoading: bool
-    }
-  }
-}
-
 export function loginCheck(username, password) {
-
-  var data = {
+  const data = {
     username: username,
     password: password
   }
 
-  return (dispatch) => {
-        //dispatch(AuthIsLoading(true));
+  return dispatch => {
+    dispatch({
+      type: 'LOGIN_REQUEST'
+    });
 
-        api.checkUser(data)
-        .then((response)=>{
-          if (response.data.result) {
-            dispatch(AuthIsLoading(false));
-            dispatch(loginSuccess(response.data.username));
-            return response;
-          }else{
-            dispatch(loginHasError(true));
-          }
+    api.checkUser(data)
+    .then(response => {
+      if (response.data.result) {
+        saveCred({
+          isLoggedIn: true,
+          username: response.data.username,
+        }, s => {
+          // eslint-disable-next-line no-console
+          console.info('Saving credentials...', s)
+        })
+
+        dispatch({
+          type: 'LOGIN_SUCCESS',
+          payload: { ...response.data }
         });
-    };
-}
 
-export function loginSuccess(item) {
-
-  return {
-    type: 'LOGIN_SUCCESS',
-    payload: {
-      username: item
-    }
-  }
+        return response;
+      }
+    }, error => {
+      dispatch({
+        type: 'LOGIN_ERROR'
+      });
+    });
+  };
 }
 
 export function logout(username, password) {
-
   deleteCred();
 
   return {
@@ -66,16 +57,6 @@ export function logout(username, password) {
     payload: {
       username,
       password
-    }
-  }
-}
-
-export function loginHasError(bool) {
-
-  return {
-    type: 'LOGIN_HAS_ERROR',
-    payload: {
-      hasError: bool
     }
   }
 }

@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { loadCred, saveCred } from '../../localStorage';
+import { Redirect } from 'react-router-dom';
 
 import * as actions from '../action';
 import Login from './Login';
@@ -9,46 +8,41 @@ import Login from './Login';
 function mapStateToProps(state) {
   const { auth } = state;
 
-  if(auth.isLoggedIn === true){
-    // save to localStorage
-    saveCred(auth);
-  }
-
   return {
     ...auth,
     userAndPass: `${auth.me.username} ${auth.me.password}`
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actions, dispatch)
-}
-
 class LoginContainer extends Component {
+  static get propTypes() {
+    return {
+      isLoggedIn: PropTypes.bool,
+      isLoading: PropTypes.bool,
+      location: PropTypes.object,
 
-  constructor(props) {
-    super(props);
-    
+      loginCheck: PropTypes.func,
+      logout: PropTypes.func,
+    }
   }
-  
-  static propTypes = {
-    me: PropTypes.shape({
-      username: PropTypes.string,
-      password: PropTypes.string,
-    }),
-    userAndPass: PropTypes.string,
-    isLoggedIn: PropTypes.bool,
 
-    login: PropTypes.func,
-    logout: PropTypes.func,
+  handleLogin = (username, password) => {
+    this.props.loginCheck(username, password);
   }
 
   render() {
-    return <Login {...this.props}/>
+    const { from } = this.props.location.state || { from: { pathname: '/' } }
+    const { isLoggedIn } = this.props
+
+    if (isLoggedIn) {
+      return <Redirect to={from} />
+    }
+
+    return <Login {...this.props} onSubmit={this.handleLogin} />
   }
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+  { ...actions }
 )(LoginContainer);

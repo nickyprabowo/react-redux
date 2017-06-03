@@ -1,16 +1,15 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {NavLink} from 'react-router-dom';
 import {Menu, Grid} from 'semantic-ui-react';
 import {Redirect} from 'react-router-dom';
 
-class Header extends React.Component{
- 
+class Header extends Component {
+
     constructor(props){
         super();
         this.state = {
             activeItem : '',
         };
-
     }
 
     handleItemClick = (e,{name}) => {
@@ -32,9 +31,9 @@ class Header extends React.Component{
     }
 
     return(
-      
+
       <Menu inverted className='menu-bar top fixed'>
-      
+
             <Menu.Item header>JKT NXT</Menu.Item>
             <Menu.Menu position='right'>
               <Menu.Item
@@ -71,7 +70,7 @@ class Header extends React.Component{
               </Menu.Item>
           </Menu.Menu>
         </Menu>*/
-          
+
     )
   }
 }

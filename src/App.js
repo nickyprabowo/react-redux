@@ -1,24 +1,22 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React, { Component } from 'react'
+import { BrowserRouter as Router, Switch } from 'react-router-dom'
+import { Provider } from 'react-redux'
 
-import { Provider } from 'react-redux';
+import 'semantic-ui-css/semantic.css'
 
-import store from './store';
-import Dashboard from './components/Dashboard';
+import allRoutes from './routes/allRoutes'
+import store from './store'
 
-import 'semantic-ui-css/semantic.css';
-import './App.css';
+import './App.css'
 
 class App extends Component {
 
   render() {
-
     return (
       <Provider store={store}>
         <Router>
           <Switch>
-            <Dashboard />
-            <Route exact path="/" component={Dashboard}/>
+            {allRoutes}
           </Switch>
         </Router>
       </Provider>

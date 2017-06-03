@@ -1,8 +1,9 @@
 import React from 'react';
-import Dashboard from '../components/Dashboard';
+import { Redirect } from 'react-router-dom';
+
+import Dashboard from 'components/Dashboard';
 import LoginPage from './LoginPage';
 import HomePage from './HomePage';
-import { Redirect } from 'react-router-dom';
 
 import {
   BrowserRouter as Router,
@@ -12,7 +13,7 @@ import {
 function DashboardPage(props){
     return(
       <div>
-        
+
       </div>
     )
 }

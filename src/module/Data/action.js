@@ -1,25 +1,24 @@
-import { dispatch } from '../../store';
-import api from '../../utils/api';
+import api from 'utils/api';
 
-export function getItems(limit, offset){
+export function getItems(limit, offset) {
   return (dispatch) => {
-      dispatch(itemsCheckLoading(true));
+    dispatch(itemsCheckLoading(true));
 
-      api.fetchAllEvents(limit,offset)
-      .then((response)=>{
-        if (response.result) {
-          dispatch(itemsCheckLoading(false));
-          dispatch(getItemsSuccess(response.data));
-          dispatch(countItems());
-        }else{
-          dispatch(itemsCheckError(true));
-        }
-      });
+    api.fetchAllEvents(limit,offset)
+    .then((response)=>{
+      if (response.result) {
+        dispatch(itemsCheckLoading(false));
+        dispatch(getItemsSuccess(response.data));
+        dispatch(countItems());
+      } else {
+        dispatch(itemsCheckError(true));
+      }
+    });
   };
 }
 
 //belum kepake mau coba local state dulu
-export function setLimit(limit){
+export function setLimit(limit) {
   return {
     type: 'SET_LIMIT',
     payload: {
@@ -29,7 +28,7 @@ export function setLimit(limit){
 }
 
 //belum kepake mau coba local state dulu
-export function setOffset(offset){
+export function setOffset(offset) {
   return {
     type: 'SET_OFFSET',
     payload: {
@@ -38,22 +37,20 @@ export function setOffset(offset){
   }
 }
 
-export function countItems(){
+export function countItems() {
   return (dispatch) => {
-
-      api.fetchTotalRecords()
-      .then((response)=>{
-        if (response.result) {
-          dispatch(countData(response.data));
-        }else{
-          dispatch(itemsCheckError(true));
-        }
-      });
+    api.fetchTotalRecords()
+    .then(response => {
+      if (response.result) {
+        dispatch(countData(response.data));
+      } else {
+        dispatch(itemsCheckError(true));
+      }
+    });
   };
 }
 
-export function countData(count){
-
+export function countData(count) {
   return {
     type: 'GET_DATA_COUNT',
     payload: {
@@ -62,7 +59,7 @@ export function countData(count){
   }
 }
 
-export function getItemsSuccess(items){
+export function getItemsSuccess(items) {
 
   return {
     type: 'GET_ITEMS_SUCCESS',
@@ -82,7 +79,6 @@ export function itemsCheckError(bool) {
 }
 
 export function itemsCheckLoading(bool) {
-
   return {
     type: 'ITEMS_IS_LOADING',
     payload: {
@@ -92,26 +88,24 @@ export function itemsCheckLoading(bool) {
 }
 
 export function saveItem(item) {
-
   return (dispatch) => {
-        dispatch(itemsCheckLoading(true));
+    dispatch(itemsCheckLoading(true));
 
+    api.checkUser(item)
+      .then(response => {
+        if (response.data.result) {
+          dispatch(itemsCheckLoading(false));
+          dispatch(saveItemSuccess(true));
 
-        api.checkUser(item)
-        .then((response)=>{
-          if (response.data.result) {
-            dispatch(itemsCheckLoading(false));
-            dispatch(saveItemSuccess(true));
-            return response;
-          }else{
-            dispatch(itemsCheckError(true));
-          }
-        });
-    };
+          return response;
+        } else {
+          dispatch(itemsCheckError(true));
+        }
+      });
+  };
 }
 
 export function saveItemSuccess(bool) {
-
   return {
     type: 'SAVE_ITEM_SUCCESS',
     payload: {

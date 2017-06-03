@@ -1,33 +1,32 @@
-import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import {Menu, Grid, Accordion, Icon} from 'semantic-ui-react';
+import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import { Menu } from 'semantic-ui-react'
 
 class Sidebar extends Component{
- 
   constructor(props){
-        super();
-        this.state = {
-            activeItem : 'events',
-        };
-
+    super(props)
+    this.state = {
+      activeItem : 'events',
     }
+  }
 
-    handleItemClick = (e,{name}) => {
-      this.setState(function(){
-        return {
-          activeItem: name
-        }
-      });
-    }
+  handleItemClick = (e, { name }) => {
+    this.setState({ activeItem: name })
+  }
 
-  render(){
-    
+  render() {
     return(
-        <Menu vertical className='left-menu'>
-          <Menu.Item name='events' as={Link} to='/home/report' active={this.state.activeItem === 'events'} onClick={this.handleItemClick} />
-        </Menu> 
+      <Menu vertical className='left-menu'>
+        <Menu.Item
+          name='events'
+          to='/events/report'
+          as={Link}
+          active={this.state.activeItem === 'events'}
+          onClick={this.handleItemClick}
+        />
+      </Menu>
     )
   }
 }
 
-export default Sidebar ;
+export default Sidebar

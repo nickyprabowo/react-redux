@@ -1,64 +1,50 @@
-import { loadState, saveState } from '../../module/localStorage';
+import { injectLoadingStates, startLoading, finishLoading, errorLoading } from 'utils/loadingStates'
 
-const initialState = {
+const initialState = injectLoadingStates({
 	me : {
-    username: '',
-    password: ''
+    username: ''
   },
   isLoggedIn: false,
   isLoading: false,
   hasError: false
-};
+});
 
 export default function auth(state = initialState, action) {
   switch (action.type) {
     case 'LOGIN_REQUEST': {
-      return Object.assign({}, state, { isLoading: true })
+      return Object.assign({}, startLoading(state))
     }
 
     case 'LOGIN_SUCCESS': {
-
       if (!action.payload) {
         return state;
       }
 
-      return Object.assign({}, state, {
+      return Object.assign({}, finishLoading(state), {
         me: {
           username: action.payload.username
         },
         isLoggedIn: true
       })
-
     }
 
-    case 'LOGIN_HAS_ERROR': {
-      if(action.payload.hasError){
-        return Object.assign({}, state, {
-          hasError: true
-        })
-      }else{
-        return state;
+    case 'LOGIN_ERROR': {
+      if (action.payload.hasError) {
+        return Object.assign({}, errorLoading(state))
       }
-    }
 
-    case 'IS_LOADING': {
-
-      if(action.payload.isLoading){
-        return Object.assign({}, state, {
-          isLoading: true
-        })
-      }else{
-        return state
-      }
-      
+      return state;
     }
 
     case 'CHECK_PERSISTED_DATA': {
-      if(action.payload.authStatus === true){
-        return Object.assign({}, state, { isLoggedIn: true })
+      if (!action.payload.authStatus.isLoggedIn) {
+        return state
       }
-      else return state;
-      
+
+      return auth(state, {
+        type: 'LOGIN_SUCCESS',
+        payload: action.payload
+      })
     }
 
     case 'LOGOUT': {
