@@ -1,11 +1,8 @@
 import { injectLoadingStates, startLoading, finishLoading, errorLoading } from 'utils/loadingStates'
 
 const initialState = injectLoadingStates({
-  items: [],
+  events: [],
   lastItem: null,
-  itemsHasError: false,
-  itemsIsLoading: false,
-  itemsIsLoaded: false,
   saveSuccess: false,
   totalData: null,
   tableLimit: 5,
@@ -25,11 +22,11 @@ export default function event(state = initialState, action) {
     }
 
     case 'FETCH_EVENTS_LIST_SUCCESS': {
-      if (!action.payload.items) {
+      if (!action.payload.data) {
         return state
       }
 
-      return Object.assign({}, startLoading(state), { ...action.payload })
+      return Object.assign({}, finishLoading(state), { events: action.payload.data })
     }
 
     case 'FETCH_EVENTS_LIST_ERROR': {
@@ -38,6 +35,16 @@ export default function event(state = initialState, action) {
       }
 
       return state;
+    }
+
+    case 'GET_DATA_COUNT': {
+      if (!action.payload.data) {
+        return state
+      }
+
+      return Object.assign({}, state, {
+        totalData: action.payload.data
+      });
     }
 
     /*case 'SET_OFFSET': {
@@ -51,14 +58,6 @@ export default function event(state = initialState, action) {
             itemsHasError: true
           });
     }*/
-
-    case 'GET_DATA_COUNT': {
-      if (action.payload.totalData != null) {
-        return Object.assign({}, state, {
-          totalData: action.payload.totalData
-        });
-      }
-    }
 
     case 'SAVE_ITEM_SUCCESS': {
       return Object.assign({}, state, {

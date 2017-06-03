@@ -4,7 +4,6 @@ import Datetime from 'react-datetime';
 import moment from 'moment';
 import {Redirect} from 'react-router-dom';
 
-import api from 'utils/api';
 import MapEditor from './MapEditor';
 import 'react-datetime/css/react-datetime.css';
 
@@ -81,7 +80,7 @@ class AddReport extends Component {
       /*console.log('An event was submitted: ' + JSON.stringify(laporan));*/
   }
 
-  insertData = (laporan) => {
+  /*insertData = (laporan) => {
 
     //get all events
     api.insertEvent(laporan)
@@ -91,7 +90,7 @@ class AddReport extends Component {
       })
     }.bind(this));
 
-  }
+  }*/
 
     render() {
       if(this.state.status === 'success'){

@@ -1,17 +1,18 @@
-import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
-import * as actions from '../action';
-import Login from './Login';
+import * as actions from '../action'
+import Login from './Login'
 
 function mapStateToProps(state) {
-  const { auth } = state;
+  const { auth } = state
 
   return {
     ...auth,
     userAndPass: `${auth.me.username} ${auth.me.password}`
-  };
+  }
 }
 
 class LoginContainer extends Component {
@@ -27,7 +28,7 @@ class LoginContainer extends Component {
   }
 
   handleLogin = (username, password) => {
-    this.props.loginCheck(username, password);
+    this.props.loginCheck(username, password)
   }
 
   render() {
@@ -45,4 +46,4 @@ class LoginContainer extends Component {
 export default connect(
   mapStateToProps,
   { ...actions }
-)(LoginContainer);
+)(LoginContainer)

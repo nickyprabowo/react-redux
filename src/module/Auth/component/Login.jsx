@@ -1,6 +1,7 @@
-import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
-import {Grid, Form, Image, Segment, Message, Header} from 'semantic-ui-react';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import ReactDOM from 'react-dom'
+import {Grid, Form, Image, Segment, Message, Header} from 'semantic-ui-react'
 
 class Login extends Component {
   state = {
@@ -16,19 +17,19 @@ class Login extends Component {
   }
 
   handleInputChange = event => {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
+    const target = event.target
+    const value = target.value
+    const name = target.name
 
     this.setState({
       [name]: value
-    });
+    })
   }
 
   handleSubmit = e => {
-    e.preventDefault();
+    e.preventDefault()
 
-    this.props.onSubmit(this.state.username, this.state.password);
+    this.props.onSubmit(this.state.username, this.state.password)
   }
 
   render() {
@@ -49,8 +50,8 @@ class Login extends Component {
           </div>
         </Grid.Column>
       </Grid>
-    );
+    )
   }
 }
 
-export default Login;
+export default Login

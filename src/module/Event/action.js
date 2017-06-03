@@ -1,18 +1,21 @@
-import api from 'utils/api';
+import api from './api';
 
-export function getItems(limit, offset) {
+export function getEventsList(limit, offset) {
   return (dispatch) => {
-    dispatch(itemsCheckLoading(true));
+    dispatch({
+      type: 'FETCH_EVENTS_LIST_REQUEST'
+    });
 
     api.fetchAllEvents(limit, offset)
-      .then((response) => {
-        if (response.result) {
-          dispatch(itemsCheckLoading(false));
-          dispatch(getItemsSuccess(response.data));
-          dispatch(countItems());
-        } else {
-          dispatch(itemsCheckError(true));
-        }
+      .then(response => {
+        dispatch({
+          type: 'FETCH_EVENTS_LIST_SUCCESS',
+          payload: { ...response.data }
+        });
+      }, response => {
+        dispatch({
+          type: 'FETCH_EVENTS_LIST_ERROR'
+        });
       });
   };
 }
@@ -41,41 +44,16 @@ export function countItems() {
   return (dispatch) => {
     api.fetchTotalRecords()
       .then(response => {
-        if (response.result) {
-          dispatch(countData(response.data));
-        } else {
-          dispatch(itemsCheckError(true));
-        }
+        dispatch({
+          type: 'GET_DATA_COUNT',
+          payload: { ...response.data }
+        });
+      }, response => {
+        dispatch({
+          type: 'GET_DATA_COUNT_ERROR'
+        });
       });
   };
-}
-
-export function countData(count) {
-  return {
-    type: 'GET_DATA_COUNT',
-    payload: {
-      totalData: count
-    }
-  }
-}
-
-export function getItemsSuccess(items) {
-
-  return {
-    type: 'GET_ITEMS_SUCCESS',
-    payload: {
-      items
-    }
-  }
-}
-
-export function itemsCheckError(bool) {
-  return {
-    type: 'ITEMS_HAS_ERROR',
-    payload: {
-      hasError: bool
-    }
-  }
 }
 
 export function itemsCheckLoading(bool) {
@@ -99,7 +77,7 @@ export function saveItem(item) {
 
           return response;
         } else {
-          dispatch(itemsCheckError(true));
+          // dispatch(itemsCheckError(true));
         }
       });
   };

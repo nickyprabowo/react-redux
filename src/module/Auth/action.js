@@ -1,5 +1,5 @@
 import { loadCred, saveCred, deleteCred } from '../localStorage';
-import api from 'utils/api';
+import api from './api';
 
 export function getAuthStatus() {
   const authStatus = loadCred();
@@ -30,8 +30,7 @@ export function loginCheck(username, password) {
           isLoggedIn: true,
           username: response.data.username,
         }, s => {
-          // eslint-disable-next-line no-console
-          console.info('Saving credentials...', s)
+          console.info('Saving credentials...', s) // eslint-disable-line no-console
         })
 
         dispatch({
