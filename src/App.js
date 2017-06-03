@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 
 import 'semantic-ui-css/semantic.css'
 
-import allRoutes from './routes/allRoutes'
+import allRoutes from './module/allRoutes'
 import store from './store'
 
 import './App.css'

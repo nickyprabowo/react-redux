@@ -1,17 +1,17 @@
 import React, { Component, PropTypes } from 'react'
 
-import * as DataActions from 'module/Data/action'
-import * as AuthActions from 'module/Auth/action'
 import createAuthGuardContainer from 'module/Auth/component/createAuthGuardContainer'
+import * as AuthActions from 'module/Auth/action'
+import * as EventActions from '../action'
 
 import EventPage from './EventPage'
 
 function mapStateToProps(state) {
-  const { auth, data } = state
+  const { auth, event } = state
 
   return {
     ...auth,
-    ...data,
+    ...event,
   }
 }
 
@@ -19,15 +19,7 @@ class Container extends Component {
   static displayName = 'EventContainer'
 
   static propTypes = {
-    me: PropTypes.shape({
-      username: PropTypes.string,
-      password: PropTypes.string,
-    }),
-    userAndPass: PropTypes.string,
-    isLoggedIn: PropTypes.bool,
-
-    login: PropTypes.func,
-    logout: PropTypes.func,
+    //
   }
 
   render() {
@@ -39,5 +31,5 @@ class Container extends Component {
 
 export default createAuthGuardContainer(
   mapStateToProps,
-  { ...AuthActions, ...DataActions },
+  { ...AuthActions, ...EventActions },
 )(Container)

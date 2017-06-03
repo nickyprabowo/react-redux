@@ -4,16 +4,16 @@ export function getItems(limit, offset) {
   return (dispatch) => {
     dispatch(itemsCheckLoading(true));
 
-    api.fetchAllEvents(limit,offset)
-    .then((response)=>{
-      if (response.result) {
-        dispatch(itemsCheckLoading(false));
-        dispatch(getItemsSuccess(response.data));
-        dispatch(countItems());
-      } else {
-        dispatch(itemsCheckError(true));
-      }
-    });
+    api.fetchAllEvents(limit, offset)
+      .then((response) => {
+        if (response.result) {
+          dispatch(itemsCheckLoading(false));
+          dispatch(getItemsSuccess(response.data));
+          dispatch(countItems());
+        } else {
+          dispatch(itemsCheckError(true));
+        }
+      });
   };
 }
 
@@ -40,13 +40,13 @@ export function setOffset(offset) {
 export function countItems() {
   return (dispatch) => {
     api.fetchTotalRecords()
-    .then(response => {
-      if (response.result) {
-        dispatch(countData(response.data));
-      } else {
-        dispatch(itemsCheckError(true));
-      }
-    });
+      .then(response => {
+        if (response.result) {
+          dispatch(countData(response.data));
+        } else {
+          dispatch(itemsCheckError(true));
+        }
+      });
   };
 }
 

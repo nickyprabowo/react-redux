@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { Grid } from 'semantic-ui-react';
 
@@ -8,24 +8,27 @@ import AddReport from './AddReport';
 import ReportList from './ReportList';
 
 class EventPage extends Component {
+  static get propTypes() {
+    return {
+      match: PropTypes.any,
+    }
+  }
+
   renderSubRoutes() {
+    const { match: { url } } = this.props;
+
     return (
       <div>
-        <Route path={`${this.props.match.url}/report`} component={() => (<ReportList {...this.props} />)} />
-        <Route path={`${this.props.match.url}/addReport`} component={() => (<AddReport {...this.props} />)} />
+        <Route path={`${url}/report`} component={() => (<ReportList {...this.props} />)} />
+        <Route path={`${url}/addReport`} component={() => (<AddReport {...this.props} />)} />
+        <Redirect from="/events" to={`${url}/report`} />
       </div>
     )
   }
 
   render() {
-    const page = this.props.match.url === '/home/report'
-      ? <Redirect to={`${this.props.match.url}/report`} />
-      : null;
-
     return (
       <div>
-        {this.renderSubRoutes()}
-
         <HeaderContainer />
         <Grid>
           <Grid.Row>
@@ -34,7 +37,7 @@ class EventPage extends Component {
             </Grid.Column>
             <Grid.Column width={13}>
               <div className="main-content">
-                {page}
+                {this.renderSubRoutes()}
               </div>
             </Grid.Column>
           </Grid.Row>
