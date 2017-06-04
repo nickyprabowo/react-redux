@@ -21,7 +21,7 @@ export default function createAuthGuardContainer(
   options = {}
 ) {
   return (DecoratedComponent) => {
-    class RouteReduxContainer extends Component {
+    class AuthGuardContainer extends Component {
       static get propTypes() {
         return {
           getAuthStatus: PropTypes.func,
@@ -56,6 +56,6 @@ export default function createAuthGuardContainer(
     return withRouter(connect(
       combineMapStateToProps(mapStateToProps),
       { ...actionCreators, ...authActions }
-    )(RouteReduxContainer))
+    )(AuthGuardContainer))
   }
 }
