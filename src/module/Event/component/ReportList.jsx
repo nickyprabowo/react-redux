@@ -33,9 +33,9 @@ function List(props) {
                 inverted
               />
               <Popup
-                trigger={<Button onClick={props.onEdit.bind(null, event)} circular size='small' icon='edit' />}
+                trigger={<Button onClick={props.onEdit} id={event.id} circular size='small' icon='edit'  />}
                 content='Edit'
-                inverted
+                inverted  
               />
               <Popup
                 trigger={<Button circular size='small' icon='trash' />}
@@ -59,7 +59,8 @@ class ReportList extends Component {
       activeItem: '1',
       search: '',
       limit: options[0].value,
-      offset: 0
+      offset: 0,
+      dataEdited: ''
     }
   }
 
@@ -74,8 +75,20 @@ class ReportList extends Component {
     this.props.countItems()
   }
 
-  editData = (event) => {
-    event.edited = true
+  onEdit = (event) => {
+    const {id} = event.target
+    const cek = ''
+
+    this.setState({
+      dataEdited: id
+    }, this.findDataToEdit)
+
+  }
+
+  findDataToEdit = () => {
+    this.props.events.find((element) => {
+      return element.id === this.state.dataEdited;
+    })
   }
 
   // Update search item
@@ -165,7 +178,7 @@ class ReportList extends Component {
             </Table.Row>
           </Table.Header>
 
-          <List events={filteredEvent} onEdit={this.editData} />
+          <List events={filteredEvent} onEdit={this.onEdit} />
 
           <Table.Footer fullWidth>
             <Table.Row>

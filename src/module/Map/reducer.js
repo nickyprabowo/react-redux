@@ -9,7 +9,7 @@ export default function event(state = initialState, action) {
   switch (action.type) {
 
     case 'FILL_POLYLINES': {
-      return Object.assign({}, {polylines: action.payload.poly})
+      return Object.assign({}, state, {polylines: action.payload.poly})
 
     }
 
