@@ -3,19 +3,11 @@ import { injectLoadingStates, startLoading, finishLoading, errorLoading } from '
 const initialState = injectLoadingStates({
   events: [],
   lastItem: null,
-  saveSuccess: false,
-  totalData: null,
-  tableLimit: 5,
-  tableOffset: 0
+  totalData: null
 });
 
 export default function event(state = initialState, action) {
   switch (action.type) {
-    case 'SET_LIMIT': {
-      return Object.assign({}, state, {
-        tableLimit: action.payload.limit
-      });
-    }
 
     case 'FETCH_EVENTS_LIST_REQUEST': {
       return Object.assign({}, startLoading(state))
@@ -47,22 +39,49 @@ export default function event(state = initialState, action) {
       });
     }
 
-    /*case 'SET_OFFSET': {
-        return Object.assign({}, state, {
-            tableOffset: action.payload.offset
-          });
+    case 'SAVE_EVENT_REQUEST': {
+      return Object.assign({}, startLoading(state))
     }
 
-    case 'ITEMS_HAS_ERROR': {
-        return Object.assign({}, state, {
-            itemsHasError: true
-          });
-    }*/
+    case 'SAVE_EVENT_SUCCESS': {
+      if (!action.payload.data) {
+        return state
+      }
 
-    case 'SAVE_ITEM_SUCCESS': {
-      return Object.assign({}, state, {
-        saveSuccess: action.payload.saveSuccess
-      });
+      return Object.assign({}, finishLoading(state))
+    }
+
+    case 'SAVE_EVENT_ERROR': {
+      if (action.payload.hasError) {
+        return Object.assign({}, errorLoading(state))
+      }
+
+      return state;
+    }
+
+    case 'FILL_POLYLINES': {
+      return Object.assign({}, {polylines: action.payload.poly})
+
+    }
+
+    case 'FETCH_SNAP_TO_ROAD': {
+      return Object.assign({}, startLoading(state))
+    }
+
+    case 'FETCH_SNAP_TO_ROAD_SUCCESS': {
+      if (!action.payload) {
+        return state
+      }
+
+      return Object.assign({}, finishLoading(state), { snappedCoordinates: action.payload.snappedCoordinates, placeIdArray: action.payload.placeIdArray })
+    }
+
+    case 'FETCH_SNAP_TO_ROAD_ERROR': {
+      if (action.payload.hasError) {
+        return Object.assign({}, errorLoading(state))
+      }
+
+      return state;
     }
 
     default: {

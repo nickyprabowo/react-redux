@@ -1,11 +1,10 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Grid, Header, Table, Icon, Checkbox, Button, Divider, Popup, Form, Dropdown, Menu
-} from 'semantic-ui-react'
-
-import LoadingState from '../../../components/Loader'
+} from 'semantic-ui-react';
+/*import PropTypes from 'prop-types';*/
+import api from 'utils/api';
 
 const options = [
   { key: '5', text: '5', value: '5' },
@@ -46,6 +45,7 @@ function List(props) {
           </Table.Row>
         )
       })}
+
     </Table.Body>
 
   )
@@ -53,53 +53,83 @@ function List(props) {
 
 class ReportList extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       activeItem: '1',
       search: '',
       limit: options[0].value,
       offset: 0
-    }
+    };
   }
 
   static get propTypes() {
     return {
-      events: PropTypes.array,
+      getItems: PropTypes.func,
     }
   }
 
   componentWillMount() {
-    this.props.getEventsList(this.state.limit, this.state.offset)
-    this.props.countItems()
+    // get all data
+    //this.getData(this.state.limit,this.state.offset);
+    if (this.props.items.length == 0) {
+      this.props.getItems(this.state.limit, this.state.offset);
+      this.props.countItems();
+    }
   }
 
   editData = (event) => {
-    event.edited = true
+
+    event.edited = true;
+
   }
 
+  /*getData = (limit,offset) => {
+
+    api.fetchAllEvents(limit,offset)
+    .then(function(events){
+      this.setState(function(){
+        return{eventList: events.data}
+      })
+    }.bind(this));
+
+  }
+
+  countPage = () => {
+    api.fetchTotalRecords()
+    .then(response => {
+      this.setState({countData : 10})
+    })
+    .catch(err => {
+      console.error('cannot count')
+    })
+  }*/
+
   // Update search item
-  updateSearch = e => {
-    this.setState({ search: e.target.value.substr(0, 20) })
+  updateSearch = event => {
+    this.setState({ search: event.target.value.substr(0, 20) });
   }
 
   // Update data per page
   updateLimit = (e, { value }) => {
-    this.setState({ limit: value }, () => {
-      this.props.getEventsList(this.state.limit, (parseInt(this.state.activeItem) - 1) * this.state.limit)
+
+    this.setState({ limit: value }, function () {
+      this.props.getItems(this.state.limit, (parseInt(this.state.activeItem) - 1) * this.state.limit);
     })
+
   }
 
   handleItemClick = (e, { name }) => {
-    this.setState({ activeItem: name }, () => {
-      this.props.getEventsList(this.state.limit, (parseInt(this.state.activeItem) - 1) * this.state.limit)
-    })
+
+    this.setState({ activeItem: name }, function () {
+      this.props.getItems(this.state.limit, (parseInt(this.state.activeItem) - 1) * this.state.limit);
+    });
+
   }
 
   renderPagination() {
-    const pagination = []
-    const pages = Math.ceil(this.props.totalData / this.state.limit)
-
+    const pagination = [];
+    const pages = Math.ceil(this.props.totalData / this.state.limit);
     for (let i = 0; i < pages; i++) {
       pagination.push(
         <Menu.Item
@@ -108,7 +138,7 @@ class ReportList extends Component {
           active={this.state.activeItem === i + 1}
           onClick={this.handleItemClick}
         />
-      )
+      );
     }
 
     return pagination
@@ -116,13 +146,10 @@ class ReportList extends Component {
 
   render() {
     // Search Filter
-    const filteredEvent = this.props.events.filter(e => e.judul.toLowerCase().indexOf(this.state.search) !== -1)
-
-    if(this.props.isLoading){
-      return (
-        <LoadingState size='big'/>
-      )
-    }
+    const filteredEvent = this.props.items.filter(
+      function (event) {
+        return event.judul.toLowerCase().indexOf(this.state.search) !== -1;
+      }.bind(this));
 
     return (
       <div>
@@ -191,9 +218,8 @@ class ReportList extends Component {
           </Table.Footer>
         </Table>
       </div>
-
-    )
+    );
   }
 }
 
-export default ReportList
+export default ReportList;

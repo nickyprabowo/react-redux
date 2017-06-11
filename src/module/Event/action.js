@@ -20,26 +20,6 @@ export function getEventsList(limit, offset) {
   };
 }
 
-//belum kepake mau coba local state dulu
-export function setLimit(limit) {
-  return {
-    type: 'SET_LIMIT',
-    payload: {
-      limit
-    }
-  }
-}
-
-//belum kepake mau coba local state dulu
-export function setOffset(offset) {
-  return {
-    type: 'SET_OFFSET',
-    payload: {
-      offset
-    }
-  }
-}
-
 export function countItems() {
   return (dispatch) => {
     api.fetchTotalRecords()
@@ -56,38 +36,22 @@ export function countItems() {
   };
 }
 
-export function itemsCheckLoading(bool) {
-  return {
-    type: 'ITEMS_IS_LOADING',
-    payload: {
-      isLoading: bool
-    }
-  }
-}
-
-export function saveItem(item) {
+export function saveEvent(item) {
   return (dispatch) => {
-    dispatch(itemsCheckLoading(true));
+    dispatch({
+      type: 'SAVE_EVENT_REQUEST'
+    });
 
-    api.checkUser(item)
+    api.insertEvent(item)
       .then(response => {
-        if (response.data.result) {
-          dispatch(itemsCheckLoading(false));
-          dispatch(saveItemSuccess(true));
-
-          return response;
-        } else {
-          // dispatch(itemsCheckError(true));
-        }
+        dispatch({
+          type: 'SAVE_EVENT_SUCCESS',
+          payload: { ...response.data }
+        });
+      }, response => {
+        dispatch({
+          type: 'SAVE_EVENT_ERROR'
+        });
       });
   };
-}
-
-export function saveItemSuccess(bool) {
-  return {
-    type: 'SAVE_ITEM_SUCCESS',
-    payload: {
-      saveSuccess: bool
-    }
-  }
 }

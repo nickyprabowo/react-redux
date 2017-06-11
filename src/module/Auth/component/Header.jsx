@@ -17,6 +17,14 @@ class Header extends Component {
         return {
           activeItem: name
         }
+      });
+    }
+
+    handleLogout = () => {
+      this.setState(function(){
+        return {
+          activeItem: 'logout'
+        }
       }, function(){
         this.props.logout(this.props.me.username, this.props.me.password);
       });
@@ -47,7 +55,7 @@ class Header extends Component {
               <Menu.Item
                 name='logout'
                 active={this.state.activeItem === 'logout'}
-                onClick={this.handleItemClick}
+                onClick={this.handleLogout}
               >
                 Logout
               </Menu.Item>

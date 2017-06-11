@@ -29,3 +29,9 @@ export function errorLoading(state = {}) {
     hasError: true,
   })
 }
+
+export function snappedPaths(state = {}) {
+  return Object.assign({}, state, {
+    ...state,
+  })
+}

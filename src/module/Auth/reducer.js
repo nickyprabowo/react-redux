@@ -37,7 +37,7 @@ export default function auth(state = initialState, action) {
     }
 
     case 'CHECK_PERSISTED_DATA': {
-      if (!action.payload.authStatus.isLoggedIn) {
+      if (!action.payload.authStatus) {
         return state
       }
 

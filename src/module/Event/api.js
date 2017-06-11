@@ -19,5 +19,5 @@ export default {
     const encodedURI = window.encodeURI(`${endpoint}/countData`);
 
     return axios.get(encodedURI)
-  }
+  },
 }
