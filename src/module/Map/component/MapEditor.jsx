@@ -212,7 +212,7 @@ export default class MapEditor extends Component {
   }
 
   check = () => {
-    console.log(this.props.snappedCoordinates)
+    //console.log(this.props.snappedCoordinates)
   }
 
   render() {

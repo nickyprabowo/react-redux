@@ -2,15 +2,16 @@ import { injectLoadingStates, startLoading, finishLoading, errorLoading } from '
 
 const initialState = injectLoadingStates({
   polylines: [],
-  snappedCoordinates: [],
-});
+  snappedCoordinates: []
+})
 
-export default function event(state = initialState, action) {
+export default function map(state = initialState, action) {
   switch (action.type) {
 
     case 'FILL_POLYLINES': {
-      return Object.assign({}, state, {polylines: action.payload.poly})
 
+      return Object.assign({}, state, { polylines: action.payload.poly })
+      
     }
 
     case 'FETCH_SNAP_TO_ROAD': {
@@ -21,8 +22,13 @@ export default function event(state = initialState, action) {
       if (!action.payload) {
         return state
       }
-      
-      return Object.assign({}, finishLoading(state), { snappedCoordinates: action.payload.snappedCoordinates, placeIdArray: action.payload.placeIdArray })
+
+      const snappedCoordinates = [...state.snappedCoordinates, ...action.payload.snappedCoordinates]
+
+      return Object.assign({}, finishLoading(state), {
+        snappedCoordinates,
+        placeIdArray: action.payload.placeIdArray
+      })
     }
 
     case 'FETCH_SNAP_TO_ROAD_ERROR': {
@@ -30,11 +36,11 @@ export default function event(state = initialState, action) {
         return Object.assign({}, errorLoading(state))
       }
 
-      return state;
+      return state
     }
 
     default: {
-      return state;
+      return state
     }
   }
 }

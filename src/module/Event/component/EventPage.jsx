@@ -29,6 +29,7 @@ class EventPage extends Component {
         <Route exact path={url} render={() => (
           <Redirect to={`${url}/report`} />
         )} />
+
       </div>
     )
   }

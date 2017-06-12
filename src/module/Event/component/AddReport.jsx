@@ -25,7 +25,8 @@ class AddReport extends Component {
       deskripsi: '',
       kategori: options[0].value,
       endDate: '',
-      status:''
+      status:'',
+      kategoriToEdit: ''
     };
   }
 
@@ -90,26 +91,28 @@ class AddReport extends Component {
     }
 
     return (
-      <div>
+      <div>       
+          
         <Header as='h2'>
-          Add Event
-          <Header.Subheader>
-            Submit your event here
-          </Header.Subheader>
-      </Header>
-      <Divider section/>
-        <Form onSubmit={this.handleSubmit}>
-          <Form.Input name='judul' placeholder='Judul Laporan' label='Judul Laporan' defaultValue={this.state.judul} onChange={this.handleInputChange} required />
-          <Form.Select name='kategori' label='Kategori' defaultValue={options[0].value} selection options={options} onChange={this.handleSpecialInputChange} compact required />
-          <Form.TextArea name='deskripsi' label='Deskripsi' placeholder='Tell us more ...' onChange={this.handleInputChange} required />
-          <Form.Group widths='equal'>
-          <Form.Field name='startDate' label='Start Date' control={Datetime} onChange={this.handleStartDate}/>
-          <Form.Field name='endDate' label='End Date' control={Datetime} onChange={this.handleEndDate}/>
-        </Form.Group>
-        <MapContainer/>
-        <br />
-        <Button className='primary' as={Link} to='/events/MapEditor'>Submit</Button>
-      </Form>
+            Add Event
+            <Header.Subheader>
+              Submit your event here
+            </Header.Subheader>
+        </Header>;
+        
+        <Divider section/>
+          <Form onSubmit={this.handleSubmit}>
+            <Form.Input name='judul' placeholder='Judul Laporan' label='Judul Laporan' value={this.props.editing ? this.props.editedData.judul : this.state.judul} defaultValue={this.props.editing ? this.props.editedData.judul : this.state.judul} onChange={this.handleInputChange} required />
+            <Form.Select name='kategori' label='Kategori' value={'khj'} selection options={options} onChange={this.handleSpecialInputChange} compact required />
+            <Form.TextArea name='deskripsi' label='Deskripsi' placeholder='Tell us more ...' onChange={this.handleInputChange} required />
+            <Form.Group widths='equal'>
+            <Form.Field name='startDate' label='Start Date' control={Datetime} onChange={this.handleStartDate}/>
+            <Form.Field name='endDate' label='End Date' control={Datetime} onChange={this.handleEndDate}/>
+          </Form.Group>
+          <MapContainer/>
+          <br />
+          <Button className='primary' as={Link} to='/events/MapEditor'>Submit</Button>
+        </Form>
       </div>
     );
   }

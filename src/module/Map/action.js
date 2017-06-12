@@ -1,5 +1,5 @@
 /* global google */
-import api from './api';
+import api from './api'
 
 export function fillPolylines(poly) {
   return (dispatch) => {
@@ -8,37 +8,39 @@ export function fillPolylines(poly) {
       payload: {
         poly
       }
-    });
-  };
+    })
+  }
 }
 
 export function getSnapToRoad(pathValues) {
   return (dispatch) => {
     dispatch({
       type: 'FETCH_SNAP_TO_ROAD'
-    });
+    })
 
     api.fetchSnapToRoad(pathValues)
       .then(response => {
-        dispatch(processSnapToRoadResponse(response.data.snappedPoints));
+        dispatch(processSnapToRoadResponse(response.data.snappedPoints))
       }, response => {
         dispatch({
           type: 'FETCH_SNAP_TO_ROAD_ERROR'
-        });
-      });
-  };
+        })
+      })
+  }
 }
 
 export function processSnapToRoadResponse(snappedPoints) {
   return (dispatch) => {
-  
-    var snappedCoordinates = [];
-    var placeIdArray = [];
+    const snappedCoordinates = []
+    const placeIdArray = []
 
-    for (var i = 0; i < snappedPoints.length; i++) {
-      var latlng = new google.maps.LatLng(parseFloat(snappedPoints[i].location.latitude),parseFloat(snappedPoints[i].location.longitude));
-      snappedCoordinates.push(latlng);
-      placeIdArray.push(snappedPoints[i].placeId);
+    for (let i = 0; i < snappedPoints.length; i++) {
+      const latlng = new google.maps.LatLng(
+        parseFloat(snappedPoints[i].location.latitude),
+        parseFloat(snappedPoints[i].location.longitude)
+      )
+      snappedCoordinates.push(latlng)
+      placeIdArray.push(snappedPoints[i].placeId)
     }
 
     dispatch({
@@ -47,6 +49,6 @@ export function processSnapToRoadResponse(snappedPoints) {
         snappedCoordinates,
         placeIdArray
       }
-    });
-  };
+    })
+  }
 }

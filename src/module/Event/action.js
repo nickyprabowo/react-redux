@@ -55,3 +55,51 @@ export function saveEvent(item) {
       });
   };
 }
+
+export function editEvent(item, kategoriKey) {
+  return (dispatch) => {
+
+    dispatch({
+      type: 'EDITING_DATA',
+      payload: {
+        editing: true,
+        kategoriKey,
+        item
+      }
+    });
+    
+  };
+}
+
+export function cancelEdit() {
+  return (dispatch) => {
+    dispatch({
+      type: 'CANCEL_EDITING_DATA',
+      payload: {
+        editing: false,
+      }
+    });
+    
+  };
+}
+
+export function saveEditEvent(item) {
+  return (dispatch) => {
+    dispatch({
+      type: 'SAVE_EDIT_REQUEST'
+    });
+
+    api.insertEvent(item)
+      .then(response => {
+        dispatch({
+          type: 'SAVE_EDIT_SUCCESS',
+          payload: { ...response.data }
+        });
+      }, response => {
+        dispatch({
+          type: 'SAVE_EDIT_ERROR'
+        });
+      });
+  };
+}
+

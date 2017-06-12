@@ -6,6 +6,7 @@ import {
 } from 'semantic-ui-react'
 
 import LoadingState from '../../../components/Loader'
+import EditReport from './EditEvent'
 
 const options = [
   { key: '5', text: '5', value: '5' },
@@ -77,18 +78,20 @@ class ReportList extends Component {
 
   onEdit = (event) => {
     const {id} = event.target
-    const cek = ''
 
     this.setState({
       dataEdited: id
-    }, this.findDataToEdit)
+    }, this.getDataToEdit)
 
   }
 
-  findDataToEdit = () => {
-    this.props.events.find((element) => {
-      return element.id === this.state.dataEdited;
+  getDataToEdit = () => {
+    const ev = this.props.events.find((element) => {
+      return element.id === parseInt(this.state.dataEdited);
     })
+
+    this.props.editEvent(ev)
+    
   }
 
   // Update search item
@@ -139,6 +142,11 @@ class ReportList extends Component {
 
     return (
       <div>
+
+        {this.props.editing &&
+          <EditReport {...this.props}/>
+        }
+
         <Header as='h2'>
           Event List <Header.Subheader>Manage your events here</Header.Subheader>
         </Header>

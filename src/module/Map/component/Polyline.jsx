@@ -13,7 +13,7 @@ export default class PolylinePath extends Component {
   }
 
   render(){
-    console.log(this.props.snapped)
+    //console.log(this.props.snapped)
     return (
       <Polyline
         path={this.props.snapped}
