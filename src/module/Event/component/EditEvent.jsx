@@ -17,57 +17,36 @@ const options = [
 
 class EditReport extends Component {
     static propTypes = {
-        className: PropTypes.string,
+      className: PropTypes.string,
     };
 
     constructor(props) {
-        super(props);
-        this.state = {
-          kategori: '',
-          key: ''
-        }
-    } 
+      super(props);
 
-    componentDidMount() {
-      this.getKategoriToEdit()
-    }
+      const { kategori, ...others } = props.editedData
 
-    getKategoriToEdit = () => {
-
-      var key = this.props.events.findIndex((element) => {
-        return element.kategori === this.props.editedData.kategori;
-      })
-      
-      this.setState({
-        key: key
-      }, () => {console.log('state '+this.state.key)})
-
+      this.state = {
+        kategori: kategori || options[0].value,
+        ...others
+      }
     }
 
     handleInputChange = (event) => {
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
+      const target = event.target;
+      const value = target.value;
+      const name = target.name;
 
-        this.setState({
-          [name]: value
-        });
+      this.setState({
+        [name]: value
+      });
     }
 
     handleStartDate = (date) => {
-
-      this.setState({
-        startDate: date
-      });
-
+      this.setState({ startDate: date });
     }
 
     handleEndDate = (date) => {
-
-      this.setState({
-        endDate: date
-      });
-
+      this.setState({ endDate: date });
     }
 
     handleSpecialInputChange = (event, data) => {
@@ -80,56 +59,48 @@ class EditReport extends Component {
     }
 
     handleSubmit = (event) => {
-        event.preventDefault();
+      event.preventDefault();
 
-        const laporan = {
-          'judul': this.state.judul,
-          'kategori': this.state.kategori,
-          'deskripsi' : this.state.deskripsi,
-          'start' : moment(this.state.startDate).format("YYYY-MM-DD HH:mm:ss"),
-          'end' : moment(this.state.startDate).format("YYYY-MM-DD HH:mm:ss"),
-          'created_at' : new Date('YYYY-MM-DD HH:mm:ss')
-        };
+      const laporan = {
+        'judul': this.state.judul,
+        'kategori': this.state.kategori,
+        'deskripsi' : this.state.deskripsi,
+        'start' : moment(this.state.startDate).format("YYYY-MM-DD HH:mm:ss"),
+        'end' : moment(this.state.startDate).format("YYYY-MM-DD HH:mm:ss"),
+        'created_at' : new Date('YYYY-MM-DD HH:mm:ss')
+      };
 
-        this.props.saveEvent(laporan);
-        
-        <Redirect to='/home/report' />
+      this.props.saveEditEvent(laporan);
+
+      <Redirect to='/home/report' />
     }
 
     render() {
-        let option = '';
-        if(this.state.key==''){
-          option = options[0].value
-        }else{
-          option = options[this.state.key].value
-        }
-        
-        return (
-            <Modal open={this.props.editing} onClose={this.props.cancelEdit}>
-              <Modal.Header>You're now in edit mode</Modal.Header>
-              <Modal.Content>
-                <Modal.Description>
-                  <Form onSubmit={this.handleSubmit}>
-                    <Form.Input name='judul' placeholder='Judul Laporan' label='Judul Laporan' value={this.props.editedData.judul} onChange={this.handleInputChange} required />
-                    <Form.Select name='kategori' label='Kategori' value={option} selection options={options} onChange={this.handleSpecialInputChange} compact required />
-                    <Form.TextArea name='deskripsi' label='Deskripsi' placeholder='Tell us more ...' value={this.props.editedData.deskripsi}  onChange={this.handleInputChange} required />
-                    <Form.Group widths='equal'>
-                      <Form.Field name='startDate' label='Start Date' value={this.props.editedData.start} control={Datetime} onChange={this.handleStartDate}/>
-                      <Form.Field name='endDate' label='End Date' value={this.props.editedData.end} control={Datetime} onChange={this.handleEndDate}/>
-                    </Form.Group>
-                    <MapContainer/>
-                  </Form>
-                </Modal.Description>
-              </Modal.Content>
-              <Modal.Actions>
-                <Button color='black' onClick={this.props.cancelEdit}>
-                  Cancel
-                </Button>
-                <Button positive icon='checkmark' labelPosition='right' content="Submit" onClick={this.props.cancelEdit} />
-              </Modal.Actions>
-            </Modal>
-        );
-      
+      return (
+        <Modal open={this.props.editing} onClose={this.props.cancelEdit}>
+          <Modal.Header>You're now in edit mode</Modal.Header>
+          <Modal.Content>
+            <Modal.Description>
+              <Form onSubmit={this.handleSubmit}>
+                <Form.Input name='judul' placeholder='Judul Laporan' label='Judul Laporan' value={this.props.editedData.judul} onChange={this.handleInputChange} required />
+                <Form.Select name='kategori' label='Kategori' value={this.state.kategori} selection options={options} onChange={this.handleSpecialInputChange} compact required />
+                <Form.TextArea name='deskripsi' label='Deskripsi' placeholder='Tell us more ...' value={this.props.editedData.deskripsi} onChange={this.handleInputChange} required />
+                <Form.Group widths='equal'>
+                  <Form.Field name='startDate' label='Start Date' value={this.props.editedData.start} control={Datetime} onChange={this.handleStartDate}/>
+                  <Form.Field name='endDate' label='End Date' value={this.props.editedData.end} control={Datetime} onChange={this.handleEndDate}/>
+                </Form.Group>
+                <MapContainer/>
+              </Form>
+            </Modal.Description>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button color='black' onClick={this.props.cancelEdit}>
+              Cancel
+            </Button>
+            <Button positive icon='checkmark' labelPosition='right' content="Submit" onClick={this.props.cancelEdit} />
+          </Modal.Actions>
+        </Modal>
+      );
     }
 }
 

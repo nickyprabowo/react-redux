@@ -39,7 +39,8 @@ export function countItems() {
 export function saveEvent(item) {
   return (dispatch) => {
     dispatch({
-      type: 'SAVE_EVENT_REQUEST'
+      type: 'SAVE_EVENT_REQUEST',
+      payload: item
     });
 
     api.insertEvent(item)
@@ -67,7 +68,7 @@ export function editEvent(item, kategoriKey) {
         item
       }
     });
-    
+
   };
 }
 
@@ -79,14 +80,15 @@ export function cancelEdit() {
         editing: false,
       }
     });
-    
+
   };
 }
 
 export function saveEditEvent(item) {
   return (dispatch) => {
     dispatch({
-      type: 'SAVE_EDIT_REQUEST'
+      type: 'SAVE_EDIT_REQUEST',
+      payload: item
     });
 
     api.insertEvent(item)
