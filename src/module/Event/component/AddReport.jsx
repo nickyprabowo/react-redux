@@ -17,8 +17,9 @@ const options = [
 
 class AddReport extends Component {
 
-  constructor(props){
-    super();
+  constructor(props) {
+    super(props);
+
     this.state = {
       startDate:'',
       judul: '',
@@ -31,32 +32,29 @@ class AddReport extends Component {
   }
 
   handleInputChange = (event) => {
-      const target = event.target;
-      const value = target.value;
-      const name = target.name;
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
 
-      this.setState({
-        [name]: value
-      });
+    this.setState({
+      [name]: value
+    });
   }
 
   handleStartDate = (date) => {
-
     this.setState({
       startDate: date
     });
-
   }
 
   handleEndDate = (date) => {
-
     this.setState({
       endDate: date
     });
-
   }
 
   handleSpecialInputChange = (event, data) => {
+    console.info('DATA: ', data);
     const value = data.value;
     const name = data.name;
 
@@ -78,7 +76,7 @@ class AddReport extends Component {
       };
 
       this.props.saveEvent(laporan);
-      
+
       <Redirect to='/home/report' />
   }
 
@@ -91,19 +89,19 @@ class AddReport extends Component {
     }
 
     return (
-      <div>       
-          
+      <div>
+
         <Header as='h2'>
             Add Event
             <Header.Subheader>
               Submit your event here
             </Header.Subheader>
         </Header>;
-        
+
         <Divider section/>
           <Form onSubmit={this.handleSubmit}>
             <Form.Input name='judul' placeholder='Judul Laporan' label='Judul Laporan' value={this.props.editing ? this.props.editedData.judul : this.state.judul} defaultValue={this.props.editing ? this.props.editedData.judul : this.state.judul} onChange={this.handleInputChange} required />
-            <Form.Select name='kategori' label='Kategori' value={'khj'} selection options={options} onChange={this.handleSpecialInputChange} compact required />
+            <Form.Select name='kategori' label='Kategori' value={this.state.kategori} selection options={options} onChange={this.handleSpecialInputChange} compact required />
             <Form.TextArea name='deskripsi' label='Deskripsi' placeholder='Tell us more ...' onChange={this.handleInputChange} required />
             <Form.Group widths='equal'>
             <Form.Field name='startDate' label='Start Date' control={Datetime} onChange={this.handleStartDate}/>
